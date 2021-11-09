@@ -7,7 +7,9 @@ module.exports = {
         '80':'80px'
       },
       height:{
-        '80':'80px'
+        '80':'80px',
+        '50':'50px',
+        '400':'300px'
       },
       
       fontFamily:{

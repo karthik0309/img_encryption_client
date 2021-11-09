@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     return (
-        <div className="h-80 w-5/6 bg-white rounded-lg shadow-lg fixed top-2 left-12 ml-10 z-10 flex justify-around items-center">
+        <div className="h-80 w-5/6 bg-white rounded-lg shadow-lg fixed top-2 left-0 z-10 flex justify-around items-center" style={{marginLeft:'10%'}}>
             <div className="" id="logo">
                 <h1 className="font-pacifico font-bold text-2xl hover:text-purple-700">ImgCrypto</h1>
             </div>
