@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import { postUserData } from '../actions/userApiCalls'
 import Home from '../assets/home.jpeg'
 
 const Signup = () => {
@@ -22,10 +23,20 @@ const Signup = () => {
             return
         }
 
+        try{
+            postUserData(formData.fullName,formData.email).then(res=>{
+                console.log(res)
+                localStorage.setItem('userId',res.id)
+            })
+        }catch(err){
+            setFormData({...formData,error:err})
+        }
+
         setFormData({fullName:'',
         email:'',
         error:''})
     }
+
     return (
         <div className="h-screen w-screen flex bg-gray-50	">
             <img src={Home} alt="Home" className="h-100 w-3/5 object-cover"/>
@@ -38,7 +49,7 @@ const Signup = () => {
                 </p>}
                 <div className="md:flex md:items-center mb-6">
                     <div className="md:w-1/3">
-                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-full-name">
+                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-full-name">
                         Full Name
                     </label>
                     </div>
@@ -51,7 +62,7 @@ const Signup = () => {
                 </div>
                 <div className="md:flex md:items-center mb-6">
                     <div className="md:w-1/3">
-                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-password">
+                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-password">
                         UserEmail
                     </label>
                     </div>

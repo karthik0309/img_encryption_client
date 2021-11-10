@@ -16,7 +16,7 @@ const Navbar = () => {
                 </li>
                 <li>
                     <Link to="/login">
-                    <button class=" w-80 h-10 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold rounded" 
+                    <button className=" w-80 h-10 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold rounded" 
                     type="button"
                     >
                        Login

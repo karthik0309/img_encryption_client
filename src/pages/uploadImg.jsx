@@ -1,4 +1,8 @@
 import React,{useState} from 'react'
+import { uploadImage,getImgById } from '../actions/imageApiCalls'
+import { API } from '../backend'
+
+const imgPath=API+"/media/"
 
 const UploadImg = () => {
     const style={
@@ -7,12 +11,14 @@ const UploadImg = () => {
 
     const [formData,setFormData]=useState({
         name:'',
-        message:''
+        message:'',
+        error:''
     })
-    const [uploadedImg,setUploadedImg]=useState(null)
+    const [uploadedImg,setUploadedImg]=useState()
     const [imgURL,setImgURL]=useState(null)
     const [encryptOptions,setEncryptOptions]=useState('encrypt')
     const [showOptions,setShowOptions]=useState(false)
+    const [encryptedResult,setEncryptedResult]=useState({})
 
     const handleFileUploadChange=(e)=>{
         setUploadedImg(e.target.files[0])
@@ -28,6 +34,28 @@ const UploadImg = () => {
         setEncryptOptions(type)
     }
 
+    const handleFormSubmit=()=>{
+        const form=new FormData()
+        const userId = localStorage.getItem('userId')
+        form.append('name',formData.name)
+        form.append('message',formData.message)
+        form.append('type',encryptOptions)
+        form.append('image',uploadedImg,uploadedImg.name)
+        form.append('user',"1")
+        
+        try{
+            uploadImage(form).then(res=>{
+                getImgById(res.id,userId).then((img)=>{
+                    const temp=img.image.split("/")
+                    img.image=imgPath+temp[temp.length-1]
+                    setEncryptedResult(img)
+                })
+            })
+        }catch(err){
+            setFormData({...formData,error:err})
+        }
+    }
+    console.log(encryptedResult)
     return (
         <div className="mt-40" style={style}>
             <div className="flex">
@@ -38,8 +66,8 @@ const UploadImg = () => {
                     <input type="file" id="image_upload" name="image_upload" hidden onChange={e=>handleFileUploadChange(e)}/>
 
                     <div className="h-400 border-4 border-gray-500 rounded-md mt-2 flex justify-center">
-                        {uploadedImg!==null &&
-                            <img src={imgURL} alt="uploaded image" className="w-6/6 h-6/6"/>
+                        {imgURL!==null &&
+                            <img src={imgURL} alt="uploaded image" className=" h-auto w-auto object-cover"/>
                         }
                     </div>
 
@@ -65,6 +93,7 @@ const UploadImg = () => {
                     <div>
                         <button className="h-50 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4" 
                         type="button"
+                        onClick={handleFormSubmit}
                         >
                             {encryptOptions}
                         </button> 
@@ -89,8 +118,8 @@ const UploadImg = () => {
 
                 <div className="w-2/6 mt-6" id="result-container">
                     <div className="h-400 border-4 border-gray-500 rounded-md mt-2 flex justify-center">
-                        {uploadedImg!==null &&
-                            <img src={imgURL} alt="uploaded image" className="w-6/6 h-6/6"/>
+                        {Object.keys(encryptedResult).length!==0 &&
+                            <img src={encryptedResult.image} alt="uploaded image" className="w-6/6 h-6/6"/>
                         }
                     </div>                   
                 </div>
