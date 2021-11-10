@@ -41,7 +41,7 @@ const UploadImg = () => {
         form.append('message',formData.message)
         form.append('type',encryptOptions)
         form.append('image',uploadedImg,uploadedImg.name)
-        form.append('user',"1")
+        form.append('user',userId)
         
         try{
             uploadImage(form).then(res=>{
@@ -54,6 +54,22 @@ const UploadImg = () => {
         }catch(err){
             setFormData({...formData,error:err})
         }
+    }
+
+    const donwloadImg=()=>{
+        fetch(encryptedResult.image,{
+            method:"GET",
+            responseType: 'blob'        
+        }).then((response) => {
+            response.arrayBuffer().then(function(buffer) {
+                const url = window.URL.createObjectURL(new Blob([buffer]));
+                const link = document.createElement("a");
+                link.href = url;
+                link.setAttribute("download", `${encryptedResult.name}.png`); //or any other extension
+                document.body.appendChild(link);
+                link.click();
+            });
+        })
     }
     console.log(encryptedResult)
     return (
@@ -119,9 +135,13 @@ const UploadImg = () => {
                 <div className="w-2/6 mt-6" id="result-container">
                     <div className="h-400 border-4 border-gray-500 rounded-md mt-2 flex justify-center">
                         {Object.keys(encryptedResult).length!==0 &&
-                            <img src={encryptedResult.image} alt="uploaded image" className="w-6/6 h-6/6"/>
+                            <img src={encryptedResult.image} alt="uploaded image" className=" h-auto w-auto object-cover"/>
                         }
-                    </div>                   
+                    </div><br/>
+                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                    onClick={donwloadImg}>
+                        Download
+                    </button>               
                 </div>
             </div>
         </div>

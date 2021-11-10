@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { deleteCookie } from '../helper/cookie'
 
-const Navbar = () => {
+const Navbar = ({log,setLog}) => {
+
     return (
         <div className="h-80 w-5/6 bg-white rounded-lg shadow-lg fixed top-2 left-0 z-10 flex justify-around items-center" style={{marginLeft:'10%'}}>
             <div className="" id="logo">
@@ -11,18 +13,40 @@ const Navbar = () => {
                 <li className="text-lg hover:text-purple-700">
                     <Link to="/">Home</Link>
                 </li>
+                
+                {!log&&
                 <li className="text-lg hover:text-purple-700">
-                    <Link to="/signup">signup</Link>
-                </li>
+                    <Link to="/signup">Signup</Link>
+                </li>}
+
+                {log && 
+                <li className="text-lg hover:text-purple-700">
+                    <Link to="/upload">Upload</Link>
+                </li>}
+
+                {!log &&
                 <li>
                     <Link to="/login">
+                        <button className=" w-80 h-10 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold rounded" 
+                        type="button"
+                        >
+                            Login
+                        </button>
+                    </Link>
+                </li>}
+                
+                {log &&
+                <li>
                     <button className=" w-80 h-10 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold rounded" 
                     type="button"
+                    onClick={()=>{deleteCookie('access');
+                            setLog(false);
+                        }}
                     >
-                       Login
+                        Signout        
                     </button>
-                    </Link>
-                </li>
+                </li>}
+                
             </ul>
         </div>
     )

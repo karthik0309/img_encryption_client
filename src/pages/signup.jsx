@@ -1,12 +1,16 @@
 import React,{useState} from 'react'
+import { useNavigate } from 'react-router'
 import { postUserData } from '../actions/userApiCalls'
 import Home from '../assets/home.jpeg'
+import { setCookie } from '../helper/cookie'
 
-const Signup = () => {
+const Signup = ({setLog}) => {
 
+    const navigate =useNavigate()
     const [formData,setFormData]=useState({
         fullName:'',
         email:'',
+        password:'',
         error:''
     })
 
@@ -17,16 +21,20 @@ const Signup = () => {
 
     const handleFormSubmit=()=>{
         if( formData.name==="" || 
-            formData.email===""){
+            formData.email===""||
+            formData.password===""){
             
             setFormData({...formData,error:"All fields are required"})
             return
         }
 
         try{
-            postUserData(formData.fullName,formData.email).then(res=>{
+            postUserData(formData.fullName,formData.email,formData.password).then(res=>{
                 console.log(res)
-                localStorage.setItem('userId',res.id)
+                localStorage.setItem('userId',res.payload.id)
+                setCookie('access',res.access,1)
+                setLog(true)
+                navigate('/')
             })
         }catch(err){
             setFormData({...formData,error:err})
@@ -34,7 +42,8 @@ const Signup = () => {
 
         setFormData({fullName:'',
         email:'',
-        error:''})
+        error:'',
+        password:''})
     }
 
     return (
@@ -62,12 +71,12 @@ const Signup = () => {
                 </div>
                 <div className="md:flex md:items-center mb-6">
                     <div className="md:w-1/3">
-                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-password">
+                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-email">
                         UserEmail
                     </label>
                     </div>
                     <div className="md:w-2/3">
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-password" type="email"
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-email" type="email"
                     onChange={handleFormData}
                     value={formData.email}
                     name="email"
@@ -75,6 +84,21 @@ const Signup = () => {
                     </div>
                 </div>
                 
+                <div className="md:flex md:items-center mb-6">
+                    <div className="md:w-1/3">
+                    <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-password">
+                        Password
+                    </label>
+                    </div>
+                    <div className="md:w-2/3">
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-password" type="password"
+                    onChange={handleFormData}
+                    value={formData.password}
+                    name="password"
+                    />
+                    </div>
+                </div>
+
                 <div className="md:flex md:items-center">
                     <div className="md:w-1/3"></div>
                     <div className="md:w-2/3">
