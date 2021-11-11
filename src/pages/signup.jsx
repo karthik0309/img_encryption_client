@@ -1,12 +1,10 @@
 import React,{useState} from 'react'
-import { useNavigate } from 'react-router'
 import { postUserData } from '../actions/userApiCalls'
 import Home from '../assets/home.jpeg'
 import { setCookie } from '../helper/cookie'
 
 const Signup = ({setLog}) => {
 
-    const navigate =useNavigate()
     const [formData,setFormData]=useState({
         fullName:'',
         email:'',
@@ -34,7 +32,6 @@ const Signup = ({setLog}) => {
                 localStorage.setItem('userId',res.payload.id)
                 setCookie('access',res.access,1)
                 setLog(true)
-                navigate('/')
             })
         }catch(err){
             setFormData({...formData,error:err})

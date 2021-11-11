@@ -2,11 +2,9 @@ import React,{useState} from 'react'
 import { userLogin } from '../actions/userApiCalls'
 import Home from '../assets/home.jpeg'
 import { setCookie } from '../helper/cookie'
-import {useNavigate} from 'react-router-dom'
 
 const Login = ({setLog}) => {
 
-    const navigate = useNavigate()
     const [formData,setFormData]=useState({
         name:'',
         password:'',
@@ -32,7 +30,6 @@ const Login = ({setLog}) => {
                 console.log(res)
                 setCookie('access',res.access,1)
                 setLog(true)
-                navigate('/')
             })
         }catch(err){
             setFormData({...formData,error:err})

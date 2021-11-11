@@ -32,6 +32,9 @@ const UploadImg = () => {
 
     const handleSetOptions=(type)=>{
         setEncryptOptions(type)
+        if(type==='decrypt'){
+            setFormData({...formData,name:'',message:''})
+        }
     }
 
     const handleFormSubmit=()=>{
@@ -96,7 +99,7 @@ const UploadImg = () => {
                         value={formData.name}
                         /><br/><br/>
                         <label >Message:</label><br/>
-                        <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text"
+                        <input readOnly={encryptOptions==='decrypt'} className={`${encryptOptions==='decrypt'? 'bg-gray-400' :'bg-gray-200'} appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500`} id="inline-full-name" type="text"
                         placeholder="Enter a message(optional)"
                         name="message"
                         onChange={e=>handleFormChange(e)}
@@ -132,16 +135,24 @@ const UploadImg = () => {
                     }
                 </div>
 
-                <div className="w-2/6 mt-6" id="result-container">
-                    <div className="h-400 border-4 border-gray-500 rounded-md mt-2 flex justify-center">
+                <div className="w-2/6" id="result-container">
+                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-1 px-4 rounded"
+                    onClick={donwloadImg}>
+                        Download
+                    </button>  
+                    <div className="h-400 border-4 border-gray-500 mt-1 rounded-md flex justify-center">
                         {Object.keys(encryptedResult).length!==0 &&
                             <img src={encryptedResult.image} alt="uploaded image" className=" h-auto w-auto object-cover"/>
                         }
-                    </div><br/>
-                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                    onClick={donwloadImg}>
-                        Download
-                    </button>               
+                    </div>
+                    {encryptOptions==='decrypt' &&
+                    <div className="" id="img-details">
+                        <label >Message:</label><br/>
+                        <input readOnly className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text"
+                        name="message"
+                        defaultValue={encryptedResult.message}
+                        />
+                    </div>}   
                 </div>
             </div>
         </div>
