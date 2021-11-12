@@ -16,7 +16,7 @@ const UploadImg = () => {
     })
     const [uploadedImg,setUploadedImg]=useState()
     const [imgURL,setImgURL]=useState(null)
-    const [encryptOptions,setEncryptOptions]=useState('encrypt')
+    const [encryptOptions,setEncryptOptions]=useState('encrypt_cbc')
     const [showOptions,setShowOptions]=useState(false)
     const [encryptedResult,setEncryptedResult]=useState({})
 
@@ -77,8 +77,8 @@ const UploadImg = () => {
     console.log(encryptedResult)
     return (
         <div className="mt-40" style={style}>
-            <div className="flex">
-                <div id="image-detail-container" className="w-2/6">
+            <div className="pr-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+                <div id="image-detail-container" className="">
                     <label htmlFor="image_upload" className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4 mb-4" >
                     Upload
                     </label>
@@ -108,7 +108,7 @@ const UploadImg = () => {
                     </div>
                 </div>
                 
-                <div className="w-1/6 flex flex-col justify-center items-center" id="encrypt-options">
+                <div className="flex flex-col justify-center items-center" id="encrypt-options">
                     <div>
                         <button className="h-50 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4" 
                         type="button"
@@ -124,18 +124,24 @@ const UploadImg = () => {
                         </button> 
                     </div>
                     {showOptions && 
-                    <div className="h-80 border-2 border-indigo-500 mt-3 rounded-md">
-                        <span className="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200" name="encrypt" onClick={e=>handleSetOptions("encrypt")}>
-                            Encrypt img <span className="text-gray-600">(AES)</span>
+                    <div className="h-160 border-2 border-indigo-500 mt-3 rounded-md">
+                        <span className="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200" name="encrypt_cbc" onClick={e=>handleSetOptions("encrypt_cbc")}>
+                            Encrypt <span className="text-gray-600">(AES_CBC)</span>
                         </span>
-                        <span className="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200" name="decrypt" onClick={e=>handleSetOptions("decrypt")}>
-                            Decrypt img<span className="text-gray-600">(AES)</span>
+                        <span className="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200" name="encrypt_ecb" onClick={e=>handleSetOptions("encrypt_ebc")}>
+                            Encrypt <span className="text-gray-600">(AES_EBC)</span>
+                        </span>
+                        <span className="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200" name="decrypt_cbc" onClick={e=>handleSetOptions("decrypt_cbc")}>
+                            Decrypt <span className="text-gray-600">(AES_CBC)</span>
+                        </span>
+                        <span className="block px-4 py-2 text-sm text-gray-800 border-b hover:bg-gray-200" name="decrypt_ebc" onClick={e=>handleSetOptions("decrypt_ebc")}>
+                            Decrypt <span className="text-gray-600">(AES_EBC)</span>
                         </span>
                     </div>
                     }
                 </div>
 
-                <div className="w-2/6" id="result-container">
+                <div className="" id="result-container">
                     <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-1 px-4 rounded"
                     onClick={donwloadImg}>
                         Download

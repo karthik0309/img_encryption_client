@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       width:{
-        '80':'80px'
+        '80':'80px',
+        '400':'400px'
       },
       height:{
         '80':'80px',
@@ -16,6 +17,14 @@ module.exports = {
         "pacifico":['"Pacifico"','cursive']
       }
     },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+      'med':{'max':'768px'},
+    }
   },
   variants: {
     extend: {},

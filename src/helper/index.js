@@ -1,11 +1,12 @@
 import { getCookie } from "./cookie";
 
 export const isAutheticated=()=>{
-    const access = getCookie('access')
+    let access = getCookie('access')
 
-    if( access===undefined || 
+    access= access=='null'?null:access
+    if( access==undefined || 
         access==="" || 
-        access===null){
+        access==null){
         return false
     }
 

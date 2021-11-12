@@ -1,5 +1,5 @@
 import { Suspense,lazy,useState } from 'react';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { Routes, Route} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { isAutheticated } from './helper';
 import PrivateRoute from './helper/PrivateRoute';
@@ -14,7 +14,6 @@ const AppRouter=()=>{
     const [loggedIn,setLoggedIn]=useState(isAutheticated())
     return(
         <Suspense fallback={<h1>Loading...</h1>}>
-        <BrowserRouter >
         <Navbar log={loggedIn} setLog={setLoggedIn}/>
             <Routes>
                 <Route element={
@@ -28,7 +27,6 @@ const AppRouter=()=>{
                     <UploadImg/>
                 </PrivateRoute>} path="/upload"/>
             </Routes>
-        </BrowserRouter>
         </Suspense>
     )
 }

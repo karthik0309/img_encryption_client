@@ -1,9 +1,12 @@
 import React,{useState} from 'react'
+import { useNavigate } from 'react-router-dom'
 import { userLogin } from '../actions/userApiCalls'
 import Home from '../assets/home.jpeg'
 import { setCookie } from '../helper/cookie'
 
 const Login = ({setLog}) => {
+
+    const navigate=useNavigate()
 
     const [formData,setFormData]=useState({
         name:'',
@@ -27,9 +30,9 @@ const Login = ({setLog}) => {
         try{
             userLogin(formData.name,formData.password).then(res=>{
                 localStorage.setItem('userId',res.payload.id)
-                console.log(res)
                 setCookie('access',res.access,1)
                 setLog(true)
+                navigate("/")
             })
         }catch(err){
             setFormData({...formData,error:err})
@@ -42,10 +45,10 @@ const Login = ({setLog}) => {
     }
 
     return (
-        <div className="h-screen w-screen flex bg-gray-50	">
-            <img src={Home} alt="Home" className="h-100 w-3/5 object-cover"/>
-            <div className="h-100 w-2/5 flex flex-col justify-center items-center">
-                <div className="w-4/5 h-3/6 shadow-xl rounded-xl bg-white px-8 pt-6 pb-8">
+        <div className="h-screen w-screen flex bg-gray-50 med:flex-col">
+            <img src={Home} alt="Home" className="h-100 w-3/5 med:w-screen med:h-4/6 object-cover"/>
+            <div className="h-100 w-2/5 med:w-screen  med:h-screen  flex flex-col justify-center items-center">
+                <div className="w-4/5 h-3/6 med:h-full med:w-full shadow-xl rounded-xl bg-white px-8 pt-6 pb-8">
                 <h1 className="text-center text-2xl mb-8 font-bold">Login</h1>
                 {formData.error!=='' && 
                 <p className="text-center text-red-700 text-md font-semibold">
@@ -58,7 +61,7 @@ const Login = ({setLog}) => {
                     </label>
                     </div>
                     <div className="md:w-2/3">
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-email" type="text"
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:ring-4" id="inline-email" type="text"
                     onChange={handleFormData}
                     value={formData.name}
                     name="name"
@@ -73,7 +76,7 @@ const Login = ({setLog}) => {
                     </label>
                     </div>
                     <div className="md:w-2/3">
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-password" type="password"
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:ring-4" id="inline-password" type="password"
                     onChange={handleFormData}
                     value={formData.password}
                     name="password"
@@ -84,7 +87,7 @@ const Login = ({setLog}) => {
                 <div className="md:flex md:items-center">
                     <div className="md:w-1/3"></div>
                     <div className="md:w-2/3">
-                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mt-4" 
+                    <button className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline hover:ring-4 text-white font-bold py-2 px-4 rounded mt-4" 
                     type="button"
                     onClick={handleFormSubmit}>
                         Login
