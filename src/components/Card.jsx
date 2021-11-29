@@ -3,7 +3,7 @@ import React from 'react'
 const Card = ({imgDetails}) => {
     return (
         <div className="overflow-hidden rounded shadow-lg">
-          <img className="w-full" src={imgDetails.image} alt={imgDetails.name}/>
+          <img className="w-full" src={process.env.REACT_APP_CLOUDINARY_URL+imgDetails.image} alt={imgDetails.name}/>
           <div className="px-6 py-4">
             <div className="font-bold text-xl mb-2">{imgDetails.name}</div>
             <p className="text-gray-700 text-base">

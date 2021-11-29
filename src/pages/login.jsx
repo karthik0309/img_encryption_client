@@ -28,11 +28,20 @@ const Login = ({setLog}) => {
         }
 
         try{
-            userLogin(formData.name,formData.password).then(res=>{
-                localStorage.setItem('userId',res.payload.id)
-                setCookie('access',res.access,1)
-                setLog(true)
-                navigate("/")
+            userLogin(formData.name,formData.password)
+            .then(res=>{
+                if(res.status===200 || res.status===201){
+                    localStorage.setItem('userId',res.payload.id)
+                    setCookie('access',res.access,1)
+                    setLog(true)
+                    navigate("/")
+                }
+                else{
+                    setFormData({...formData,error:"Enter valid credentials"})
+                }
+            })
+            .catch(err=>{
+                setFormData({...formData,error:"Something went wrong please try again"})
             })
         }catch(err){
             setFormData({...formData,error:err})

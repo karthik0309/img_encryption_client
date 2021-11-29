@@ -1,6 +1,8 @@
 import React,{useState} from 'react'
 import { uploadImage,getImgById } from '../actions/imageApiCalls'
 import { API } from '../backend'
+import Loader from '../components/Loader'
+
 
 const imgPath=API+"/media/"
 
@@ -19,6 +21,7 @@ const UploadImg = () => {
     const [encryptOptions,setEncryptOptions]=useState('encrypt_cbc')
     const [showOptions,setShowOptions]=useState(false)
     const [encryptedResult,setEncryptedResult]=useState({})
+    const [uploadClicked,setUploadClicked]=useState(false)
 
     const handleFileUploadChange=(e)=>{
         setUploadedImg(e.target.files[0])
@@ -36,8 +39,10 @@ const UploadImg = () => {
             setFormData({...formData,name:'',message:''})
         }
     }
-
+    
     const handleFormSubmit=()=>{
+        setUploadClicked(true)
+
         const form=new FormData()
         const userId = localStorage.getItem('userId')
         form.append('name',formData.name)
@@ -51,12 +56,14 @@ const UploadImg = () => {
                 getImgById(res.id,userId).then((img)=>{
                     const temp=img.image.split("/")
                     img.image=imgPath+temp[temp.length-1]
+                    setUploadClicked(false)
                     setEncryptedResult(img)
                 })
             })
         }catch(err){
             setFormData({...formData,error:err})
         }
+
     }
 
     const donwloadImg=()=>{
@@ -74,7 +81,7 @@ const UploadImg = () => {
             });
         })
     }
-    console.log(encryptedResult)
+    console.log(uploadClicked)
     return (
         <div className="mt-40" style={style}>
             <div className="pr-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
@@ -147,11 +154,12 @@ const UploadImg = () => {
                         Download
                     </button>  
                     <div className="h-400 border-4 border-gray-500 mt-1 rounded-md flex justify-center">
-                        {Object.keys(encryptedResult).length!==0 &&
-                            <img src={encryptedResult.image} alt="uploaded image" className=" h-auto w-auto object-cover"/>
+                        {Object.keys(encryptedResult).length!==0 ?
+                            <img src={encryptedResult.image} alt="uploaded image" className=" h-auto w-auto object-cover"/> 
+                            : uploadClicked && <Loader/>
                         }
                     </div>
-                    {encryptOptions==='decrypt' &&
+                    {encryptOptions.startsWith('decrypt') &&
                     <div className="" id="img-details">
                         <label >Message:</label><br/>
                         <input readOnly className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="inline-full-name" type="text"

@@ -32,13 +32,17 @@ const Signup = ({setLog}) => {
 
         try{
             postUserData(formData.fullName,formData.email,formData.password).then(res=>{
-                localStorage.setItem('userId',res.payload.id)
-                setCookie('access',res.access,1)
-                setLog(true)
-                navigate("/")
+                if(res.status===200 || res.status===201){
+                    localStorage.setItem('userId',res.payload.id)
+                    setCookie('access',res.access,1)
+                    setLog(true)
+                    navigate("/")
+                }else{
+                    setFormData({...formData,error:"Enter valid credentials"})
+                }
             })
         }catch(err){
-            setFormData({...formData,error:err})
+            setFormData({...formData,error:"Something went wrong please try again"})
         }
 
         setFormData({fullName:'',

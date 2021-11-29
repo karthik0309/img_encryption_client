@@ -20,6 +20,7 @@ const Home = () => {
         }
     },[userId])
 
+    console.log(userImages)
     return (
         <div className="h-screen w-screen">
             <img src={BG} alt="background" className="w-screen h-3/6 object-cover"/>
@@ -41,7 +42,7 @@ const Home = () => {
             </div>:
             <div className="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
                 {userImages
-                .filter(img=>!img.name.startsWith("encrypted_") && !img.name.startsWith("decrypted_"))
+                .filter(img=>!img.name.startsWith("encrypted_") && !img.name.startsWith("decrypted_") && !img.type.startsWith('decrypt'))
                 .map((ele)=>(
                         <Card imgDetails={ele} key={ele.id}/>
                 ))}
